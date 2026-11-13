@@ -1,0 +1,13 @@
+venv/
+.venv/
+env/
+data/*.db
+data/*.sqlite
+*.pyc
+__pycache__/
+.git/
+.gitignore
+.env
+*.log
+.DS_Store
+node_modules/

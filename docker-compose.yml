@@ -1,0 +1,19 @@
+services:
+  todo-app:
+    build: .
+    container_name: taskflow-todo
+    ports:
+      - "8000:8000"
+    environment:
+      - TODO_DB_PATH=/data/todo.db
+    volumes:
+      - todo-data:/data        # постоянное хранилище SQLite
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  todo-data:

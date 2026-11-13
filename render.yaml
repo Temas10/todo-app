@@ -1,0 +1,24 @@
+# Render Blueprint — деплой в один клик.
+# Подробнее: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: taskflow-todo
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.16"
+      # Для постоянного хранения данных можно подключить PostgreSQL
+      # и раскомментировать переменную ниже:
+      # - key: TODO_DATABASE_URL
+      #   fromDatabase:
+      #     name: taskflow-db
+      #     property: connectionString
+      - key: TODO_DB_PATH
+        value: /var/data/todo.db
+    disk:
+      name: todo-data
+      mountPath: /var/data
+      sizeGB: 1
